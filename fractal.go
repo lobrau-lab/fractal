@@ -151,7 +151,7 @@ func main() {
 	}
 	model := os.Getenv("LLAMA_MODEL")
 	if model == "" {
-		model = "default"
+		model = "./gemma-3-12b-it-qat-Q4_0.gguf"
 	}
 
 	systemPrompt := `You are DeepClaw, an autonomous developer execution agent equivalent to Goose, operating natively on Arch Linux.
