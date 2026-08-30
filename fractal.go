@@ -143,7 +143,11 @@ var agentTools = []Tool{
 func main() {
 	endpoint := os.Getenv("LLAMA_API_BASE")
 	if endpoint == "" {
-		endpoint = "http://127.0.0.1:8080"
+		endpoint = "http://127.0.0.1:8080/v1"
+	}
+	endpoint = strings.TrimRight(endpoint, "/")
+	if !strings.HasSuffix(endpoint, "/v1") {
+		endpoint += "/v1"
 	}
 	model := os.Getenv("LLAMA_MODEL")
 	if model == "" {
@@ -287,7 +291,7 @@ func executeToolCall(name, rawArgs string) string {
 		if len(outStr) > 2000 {
 			outStr = outStr[:1000] + "\n...[STDOUT TRUNCATED]...\n" + outStr[len(outStr)-1000:]
 		}
-		
+
 		errStr := stderr.String()
 		if len(errStr) > 2000 {
 			errStr = errStr[:1000] + "\n...[STDERR TRUNCATED]...\n" + errStr[len(errStr)-1000:]
@@ -319,7 +323,7 @@ func executeToolCall(name, rawArgs string) string {
 
 	case "trigger_fractal_collapse":
 		inputBytes, _ := args["input_bytes"].(string)
-		
+
 		fractalScript := `
 import os, sys, mmap, struct, time, hashlib, math, threading
 from binascii import crc32
@@ -418,7 +422,7 @@ if __name__ == "__main__":
 		if resStr == "" {
 			return fmt.Sprintf(`{"error": "Fractal execution crashed silently: %s"}`, strings.TrimSpace(stderr.String()))
 		}
-		
+
 		resMap := map[string]interface{}{"fractal_output": resStr}
 		b, _ := json.Marshal(resMap)
 		return string(b)
