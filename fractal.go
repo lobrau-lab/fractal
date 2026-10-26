@@ -143,7 +143,7 @@ var agentTools = []Tool{
 func main() {
 	endpoint := os.Getenv("LLAMA_API_BASE")
 	if endpoint == "" {
-		endpoint = "http://127.0.0.1:8080/v1"
+		endpoint = "http://127.0.0.1:8080"
 	}
 	endpoint = strings.TrimRight(endpoint, "/")
 	if !strings.HasSuffix(endpoint, "/v1") {
